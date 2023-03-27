@@ -12,7 +12,7 @@ from ..constants import FIFF
 from ..base import BaseRaw
 from ..meas_info import create_info
 from ...annotations import Annotations
-from ...utils import logger, verbose, fill_doc, _check_pandas_installed
+from ...utils import logger, warn, verbose, fill_doc, _check_pandas_installed
 
 EYELINK_COLS = {'timestamp': ('time',),
                 'pos': {'left': ('xpos_left', 'ypos_left', 'pupil_left'),
@@ -510,13 +510,13 @@ class RawEyelink(BaseRaw):
         # Detect the datatypes that are in file.
         if 'GAZE' in self._rec_info:
             logger.info('Pixel coordinate data detected.')
-            logger.warning('Pass `scalings=dict(eyegaze=1e3)` when using plot'
-                           ' method to make traces more legible.')
+            warn('Pass `scalings=dict(eyegaze=1e3)` when using plot'
+                 ' method to make traces more legible.')
         elif 'HREF' in self._rec_info:
             logger.info('Head-referenced eye angle data detected.')
         elif 'PUPIL' in self._rec_info:
-            logger.warning('Raw eyegaze coordinates detected. Analyze with'
-                           ' caution.')
+            warn('Raw eyegaze coordinates detected. Analyze with'
+                 ' caution.')
         if 'AREA' in pupil_info:
             logger.info('Pupil-size area reported.')
         elif 'DIAMETER' in pupil_info:
@@ -548,10 +548,10 @@ class RawEyelink(BaseRaw):
                 blocks_list = self._event_lines['SAMPLES']
                 eye_per_block = [block_info[1] for block_info in blocks_list]
                 if not all([this_eye == eye for this_eye in eye_per_block]):
-                    logger.warning('The eye being tracked changed during the'
-                                   ' recording. The channel names will reflect'
-                                   ' the eye that was tracked at the start of'
-                                   ' the recording.')
+                    warn('The eye being tracked changed during the'
+                         ' recording. The channel names will reflect'
+                         ' the eye that was tracked at the start of'
+                         ' the recording.')
 
     def _get_recording_datetime(self):
         """Create a datetime object from the datetime in ASCII file."""
@@ -578,7 +578,7 @@ class RawEyelink(BaseRaw):
                             msg = ('Extraction of measurement date failed.'
                                    ' Please report this as a github issue.'
                                    ' The date is being set to None')
-                            logger.warning(msg)
+                            warn(msg)
                         break
 
     def _href_to_radian(self, opposite, f=15_000):
@@ -857,9 +857,9 @@ class RawEyelink(BaseRaw):
             elif (key in ['messages']) and (key in descs):
                 if apply_offsets:
                     if df['offset'].isnull().all():
-                        logger.warning('There are no offsets for the messages'
-                                       f' in {self.fname}. Not applying any'
-                                       ' offset')
+                        warn('There are no offsets for the messages'
+                             f' in {self.fname}. Not applying any'
+                             ' offset')
                     # If df['offset] is all NaNs, time is not changed
                     onsets = df['time'] + df['offset'].fillna(0)
                 else:
@@ -876,7 +876,7 @@ class RawEyelink(BaseRaw):
             elif annots:
                 annots += this_annot
         if not annots:
-            logger.warning(f'Annotations for {descs} were requested but'
-                           ' none could be made.')
+            warn(f'Annotations for {descs} were requested but'
+                 ' none could be made.')
             return
         return annots

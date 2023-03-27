@@ -53,7 +53,7 @@ from ..annotations import _sync_onset
 from ..io.pick import (_DATA_CH_TYPES_ORDER_DEFAULT, _DATA_CH_TYPES_SPLIT,
                        _FNIRS_CH_TYPES_SPLIT, _EYETRACK_CH_TYPES_SPLIT,
                        _VALID_CHANNEL_TYPES)
-from ..utils import Bunch, _click_ch_name, logger
+from ..utils import Bunch, _click_ch_name, logger, warn
 from . import plot_sensors
 from ._figure import BrowserBase
 from .utils import (DraggableLine, _events_off, _fake_click, _fake_keypress,
@@ -1226,9 +1226,9 @@ class MNEBrowseFigure(BrowserBase, MNEFigure):
                 self.mne.show_hide_annotation_checkboxes.set_active(active_idx)
             self._redraw(update_data=False, annotations=True)
         else:
-            logger.warning('No annotation-label exists! '
-                           'Add one by typing the name and clicking '
-                           'on "Add new label" in the annotation-dialog.')
+            warn('No annotation-label exists! '
+                 'Add one by typing the name and clicking '
+                 'on "Add new label" in the annotation-dialog.')
 
     def _remove_annotation_hover_line(self):
         """Remove annotation line from the plot and reactivate selector."""

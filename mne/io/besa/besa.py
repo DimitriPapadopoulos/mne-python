@@ -2,7 +2,7 @@ from collections import OrderedDict
 from pathlib import Path
 import numpy as np
 
-from ...utils import logger, fill_doc, verbose
+from ...utils import logger, warn, fill_doc, verbose
 from ..meas_info import create_info
 from ...evoked import EvokedArray
 
@@ -86,13 +86,13 @@ def _read_evoked_besa_avr(fname, verbose):
     if 'Npts' in fields:
         fields['Npts'] = int(fields['Npts'])
         if fields['Npts'] != data.shape[1]:
-            logger.warn(f'The size of the data matrix ({data.shape}) does not '
-                        f'match the "Npts" field ({fields["Npts"]}).')
+            warn(f'The size of the data matrix ({data.shape}) does not '
+                 f'match the "Npts" field ({fields["Npts"]}).')
     if 'Nchan' in fields:
         fields['Nchan'] = int(fields['Nchan'])
         if fields['Nchan'] != data.shape[0]:
-            logger.warn(f'The size of the data matrix ({data.shape}) does not '
-                        f'match the "Nchan" field ({fields["Nchan"]}).')
+            warn(f'The size of the data matrix ({data.shape}) does not '
+                 f'match the "Nchan" field ({fields["Nchan"]}).')
     if 'DI' in fields:
         fields['DI'] = float(fields['DI'])
     else:
@@ -145,14 +145,14 @@ def _read_evoked_besa_mul(fname, verbose):
     if 'TimePoints' in fields:
         fields['TimePoints'] = int(fields['TimePoints'])
         if fields['TimePoints'] != data.shape[0]:
-            logger.warn(
+            warn(
                 f'The size of the data matrix ({data.shape}) does not '
                 f'match the "TimePoints" field ({fields["TimePoints"]}).')
     if 'Channels' in fields:
         fields['Channels'] = int(fields['Channels'])
         if fields['Channels'] != data.shape[1]:
-            logger.warn(f'The size of the data matrix ({data.shape}) does not '
-                        f'match the "Channels" field ({fields["Channels"]}).')
+            warn(f'The size of the data matrix ({data.shape}) does not '
+                 f'match the "Channels" field ({fields["Channels"]}).')
     if 'SamplingInterval[ms]' in fields:
         fields['SamplingInterval[ms]'] = float(fields['SamplingInterval[ms]'])
     else:
