@@ -73,7 +73,7 @@ if os.getenv("MNE_FULL_DATE", "false").lower() != "true":
 #
 # The full version, including alpha/beta/rc tags.
 release = mne.__version__
-sphinx_logger.info(f"Building documentation for MNE {release} ({mne.__file__})")
+sphinx_logger.info("Building documentation for MNE %s (%s)", release, mne.__file__)
 # The short X.Y version.
 version = ".".join(release.split(".")[:2])
 
@@ -1571,7 +1571,9 @@ def make_gallery_redirects(app, exception):
             with open(fr_path, "w") as fid:
                 fid.write(REDIRECT_TEMPLATE.format(to=to_fname))
         sphinx_logger.info(
-            f"Added {len(fnames):3d} HTML plot_* redirects for {out_dir}"
+            "Added %3d HTML plot_* redirects for %s",
+            len(fnames),
+            out_dir,
         )
 
 
@@ -1588,7 +1590,7 @@ def make_api_redirects(app, exception):
         check_existing_redirect(fr_path)
         with open(fr_path, "w") as fid:
             fid.write(REDIRECT_TEMPLATE.format(to=to_path))
-    sphinx_logger.info(f"Added {len(api_redirects):3d} HTML API redirects")
+    sphinx_logger.info("Added %3d HTML API redirects", len(api_redirects))
 
 
 def make_custom_redirects(app, exception):
@@ -1624,7 +1626,7 @@ def make_custom_redirects(app, exception):
         # write the redirect
         with open(fr_path, "w") as fid:
             fid.write(REDIRECT_TEMPLATE.format(to=to_path))
-    sphinx_logger.info(f"Added {len(custom_redirects):3d} HTML custom redirects")
+    sphinx_logger.info("Added %3d HTML custom redirects", len(custom_redirects))
 
 
 def make_version(app, exception):
@@ -1637,11 +1639,11 @@ def make_version(app, exception):
     try:
         stdout, _ = run_subprocess(["git", "rev-parse", "HEAD"], verbose=False)
     except Exception as exc:
-        sphinx_logger.warning(f"Failed to write _version.txt: {exc}")
+        sphinx_logger.warning("Failed to write _version.txt: %s", exc)
         return
     with open(os.path.join(app.outdir, "_version.txt"), "w") as fid:
         fid.write(stdout)
-    sphinx_logger.info(f'Added "{stdout.rstrip()}" > _version.txt')
+    sphinx_logger.info('Added "%s" > _version.txt', stdout.rstrip())
 
 
 # -- Connect our handlers to the main Sphinx app ---------------------------
