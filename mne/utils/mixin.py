@@ -452,7 +452,7 @@ class GetEpochsMixin:
             action += " existing"
         else:
             action = "Not setting" if metadata is None else "Adding"
-        logger.info(f"{action} metadata{n_col}")
+        logger.info("%s metadata%d", action, n_col)
         self._metadata = metadata
 
 
