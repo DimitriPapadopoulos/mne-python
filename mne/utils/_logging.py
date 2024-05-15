@@ -496,7 +496,7 @@ def wrapped_stdout(indent="", cull_newlines=False):
                 continue
             for _ in range(pending_newlines):
                 logger.info("\n")
-            logger.info(indent + line)
+            logger.info("%s%s", indent, line)
 
 
 def _frame_info(n):
